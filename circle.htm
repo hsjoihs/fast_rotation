@@ -1,0 +1,53 @@
+<meta charset="UTF-8">
+<script type="text/javascript">
+	var x1=1; var y1=0;
+	var x2=1; var y2=0;
+	var tick=0;
+	function foo()
+	{
+		var c = 127/128;
+		var d = 1/8;
+
+		var new_x1 =   c * x1 + d * y1;
+		var new_y1 =  -d * x1 + c * y1;
+		x1 = new_x1;
+		y1 = new_y1;
+
+		c = tick%256 ? 127/128 : 63/64
+
+		var new_x2 =  c * x2 + d * y2;
+		var new_y2 = -d * x2 + c * y2;
+		x2 = new_x2;
+		y2 = new_y2;
+
+		bar(x1,y1,"a");
+		bar(x2,y2,"b");
+		tick++;
+		document.getElementById("tick").innerHTML = tick;
+	}
+
+	function bar(x,y,id)
+	{
+		document.getElementById(id).style.left = 150 + x * 128;
+		document.getElementById(id).style.top = 150 + y * 128;
+		document.getElementById(id+"_").innerHTML = Math.sqrt(x*x + y*y)
+	}
+
+
+
+</script>
+<body onload="setInterval(foo,20)">
+<style>
+.box{height: 5px; width:5px;position:absolute; }
+</style>
+<h2><a href="https://twitter.com/hsjoihs/status/898386849831374848">私のツイート</a>の実演</h2>
+赤: 常に[ [127/128,1/8], [-1/8,127/128] ]を掛け算<br>
+青: 256回に1回[ [127/128,1/8], [-1/8,127/128] ]の代わりに[ [63/64,1/8], [-1/8,63/64] ]を掛け算
+<div style="height: 300px; width: 300px; background-color: #fed; position: relative;">
+	<div class="box" style=" background-color: #f00; left: 278px; top:150px" id="a"></div>
+	<div class="box" style=" background-color: #00f; left: 278px; top:150px" id="b"></div>
+	<div class="box" style=" background-color: #0f0; left: 278px; top:150px" id="c"></div>
+</div>
+tick: <span id="tick"></span><br>
+赤の半径: <span id="a_"></span><br>
+青の半径: <span id="b_"></span>
